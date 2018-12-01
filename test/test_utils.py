@@ -11,5 +11,8 @@ class Test_TestUtils(unittest.TestCase):
         self.assertEqual(dataio.get_url(2), 'https://adventofcode.com/2018/day/2/input')
         self.assertEqual(dataio.get_url(2, 2017), 'https://adventofcode.com/2017/day/2/input')
 
+    def test_convert_to_int(self):
+        self.assertEqual(dataio.convert_to_int('3\n5\n7'), [3,5,7])
+
 if __name__ == '__main__':
     unittest.main()

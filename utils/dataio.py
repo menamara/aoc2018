@@ -2,6 +2,7 @@ import requests
 import json
 import pkgutil
 import os
+import re
 
 def load_data(day, year = 2018):
     filename = ''.join(['data//', str(year), '//day', str(day), '.dat'])
@@ -22,7 +23,14 @@ def get_data(day, year = 2018):
     return r.text
 
 def get_url(day, year = 2018):
-    
-    return '/'.join([
+    url = '/'.join([
         'https://adventofcode.com', str(year), 'day', str(day), 'input'
         ])
+    return url
+
+def convert_to_int(input_string, delim='\n'):
+    elements = re.split(delim, input_string)
+    # remove empty elements, e.g. caused by newlines at eof
+    elements = list(filter(None, elements))
+    ints = list(map(int, elements))
+    return ints

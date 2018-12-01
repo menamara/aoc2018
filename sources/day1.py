@@ -21,8 +21,6 @@ def find_loop(input):
 
 if __name__ == '__main__':
     data = dataio.load_data(1)
-    lines = re.split('\n', data)
-    lines = list(filter(None, lines))
-    input = list(map(int, lines))
+    input = dataio.convert_to_int(data)
     print(add(input))
     print(find_loop(input))
