@@ -1,5 +1,5 @@
 import unittest
-from utils import dataio
+from aoc_helpers import dataio
 
 class Test_TestUtils(unittest.TestCase):
     def test_getdata(self):
@@ -13,6 +13,9 @@ class Test_TestUtils(unittest.TestCase):
 
     def test_convert_to_int(self):
         self.assertEqual(dataio.convert_to_int('3\n5\n7'), [3,5,7])
+        self.assertEqual(dataio.convert_to_int('-3\n+5\n-7'), [-3,5,-7])
+        self.assertEqual(dataio.convert_to_int('3\n5\n7\n'), [3,5,7])
+        self.assertEqual(dataio.convert_to_int('3\n5\n7\n '), [3,5,7])
 
 if __name__ == '__main__':
     unittest.main()

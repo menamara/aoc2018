@@ -1,4 +1,7 @@
-from utils import dataio
+import sys
+import os
+
+from aoc_helpers import dataio
 import re
 
 def add(input, init_value = 0):
