@@ -28,9 +28,14 @@ def get_url(day, year = 2018):
         ])
     return url
 
-def convert_to_int(input_string, delim=r'[\n\s,;]'):
+def split_data(input_string, delim=r'[\n\s,;]'):
     elements = re.split(delim, input_string)
     # remove empty elements, e.g. caused by \n at eof
     elements = list(filter(None, elements))
+    return elements
+
+
+def convert_to_int(input_string, delim=r'[\n\s,;]'):
+    elements = split_data( input_string, delim )
     ints = list(map(int, elements))
     return ints

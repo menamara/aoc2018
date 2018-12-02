@@ -17,5 +17,10 @@ class Test_TestUtils(unittest.TestCase):
         self.assertEqual(dataio.convert_to_int('3\n5\n7\n'), [3,5,7])
         self.assertEqual(dataio.convert_to_int('3\n5\n7\n '), [3,5,7])
 
+    def test_split_data(self):
+        self.assertEqual(dataio.split_data('3\n5\n7'), ['3','5','7'])
+        self.assertEqual(dataio.split_data('3\n5\n7\n'), ['3','5','7'])
+        self.assertEqual(dataio.split_data('3\n5\n7\n '), ['3','5','7'])
+
 if __name__ == '__main__':
     unittest.main()
