@@ -1,7 +1,12 @@
 import unittest
-import day1
+import day1, day2
 
 class Test_TestDays(unittest.TestCase):
+
+    def test_day2_chekcsum(self):
+        test_input = [ 'abcdef', 'bababc', 'abbcde', 'abcccd', 'aabcdd', 'abcdee', 'ababab']
+        self.assertEqual(day2.checksum(test_input), 12)
+
     def test_day1_1(self):
         self.assertEqual(day1.add([+1, -2, +3, +1]), 3)
         self.assertEqual(day1.add([+1, +1, +1]), 3)
