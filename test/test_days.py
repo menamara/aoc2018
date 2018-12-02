@@ -2,8 +2,15 @@ import unittest
 import day1, day2
 
 class Test_TestDays(unittest.TestCase):
+    def test_day2_find_matching(self):
+        test_input = [ 'abcde', 'fghij', 'klmno', 'pqrst', 'fguij', 'axcye', 'wvxyz']
+        self.assertEqual(day2.find_matching(test_input), 'fgij')
 
-    def test_day2_chekcsum(self):
+    def test_day2_is_match(self):
+        self.assertEqual(day2.is_match('fghij', 'fguij'), 'fgij')
+        self.assertEqual(day2.is_match('fxhij', 'fguij'), '')
+
+    def test_day2_checksum(self):
         test_input = [ 'abcdef', 'bababc', 'abbcde', 'abcccd', 'aabcdd', 'abcdee', 'ababab']
         self.assertEqual(day2.checksum(test_input), 12)
 
