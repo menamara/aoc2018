@@ -1,7 +1,17 @@
 import unittest
-import day1, day2
+import day1, day2, day3
 
 class Test_TestDays(unittest.TestCase):
+
+    def test_day3_Area_Class(self):
+        test_area = day3.Area('#1 @ 493,113: 12x14')
+        self.assertEqual(test_area.id, 1)
+        self.assertEqual(test_area.x, 493 )
+        self.assertEqual(test_area.y, 113 )
+        self.assertEqual(test_area.dx, 12)
+        self.assertEqual(test_area.dy, 14)
+        self.assertEqual(test_area.area, 168)
+    
     def test_day2_find_matching(self):
         test_input = [ 'abcde', 'fghij', 'klmno', 'pqrst', 'fguij', 'axcye', 'wvxyz']
         self.assertEqual(day2.find_matching(test_input), 'fgij')

@@ -1,3 +1,4 @@
+import re
 from aoc_helpers import dataio
 
 class Area:
@@ -5,7 +6,15 @@ class Area:
         
     def __init__(self, line_string):
         """ Initiate the Area with all attributes. """
-        self.area = []
+        attributes = re.match(
+            r"#(?P<id>\d+) @ (?P<x>\d+),(?P<y>\d+): (?P<dx>\d+)x(?P<dy>\d+)",
+            line_string)
+        self.id = int(attributes.group('id'))
+        self.x = int(attributes.group('x'))
+        self.y = int(attributes.group('y'))
+        self.dx = int(attributes.group('dx'))
+        self.dy = int(attributes.group('dy'))
+        self.area = self.dx * self.dy
 
     def size(self):
         """ Calculate the size of an area. """
