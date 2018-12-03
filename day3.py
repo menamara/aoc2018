@@ -1,4 +1,5 @@
 import re
+import numpy
 from aoc_helpers import dataio
 
 class Area:
@@ -16,10 +17,6 @@ class Area:
         self.dy = int(attributes.group('dy'))
         self.area = self.dx * self.dy
 
-    def size(self):
-        """ Calculate the size of an area. """
-        return 0
-
     def overlap(self, other):
         """ return the overlap between two areas, empty if they do not overlapp """
         return []
@@ -33,23 +30,19 @@ class Area_List:
         for line in input:
             self.area_list.append(Area(line))
     
-    def list_overlapps(self):
-        """ Compile a list of the overlap between each overlapping pair of areas. """
-        self.overlap = []
-    
-    def count_overlap_area(self):
+    def count_overlap_linear(self, total_size = 1000):
         """ Calculate the size of the overlap of all areas in the list. """
-        # ToDo
-        # call list_overlap if self.overlap is still empty
-        # use reduce and count for each pair of areas in self.overlap the 
-        # area unique to the first area
-        # 1. calculate size of first area and substract size of overlap area
-        return 0
+        canvas = numpy.zeros((total_size,total_size))
+        for area in self.area_list:
+            canvas[area.y:(area.y+area.dy), area.x:(area.x+area.dx)] += 1
+        return  numpy.sum(canvas > 1)
 
 
 
 if __name__ == '__main__':
     data = dataio.load_data(3)
-    input = dataio.split_data(data)
-    print(' '.join(['The solution for day 3 part 1 =', '']))
+    input = dataio.split_data(data,'\n')
+    areas = Area_List(input)
+    print(' '.join(['The solution for day 3 part 1 = ', 
+                    str(areas.count_overlap_linear()) ]))
     print(' '.join(['The solution for day 3 part 2 =', '']))

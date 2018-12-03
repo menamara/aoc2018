@@ -11,6 +11,10 @@ class Test_TestDays(unittest.TestCase):
         self.assertEqual(test_area.dx, 12)
         self.assertEqual(test_area.dy, 14)
         self.assertEqual(test_area.area, 168)
+
+    def test_day3_Area_List_Class(self):
+        test_area_list = day3.Area_List(['#1 @ 1,3: 4x4', '#2 @ 3,1: 4x4', '#3 @ 5,5: 2x2'])
+        self.assertEqual(test_area_list.count_overlap_linear(), 4)
     
     def test_day2_find_matching(self):
         test_input = [ 'abcde', 'fghij', 'klmno', 'pqrst', 'fguij', 'axcye', 'wvxyz']
