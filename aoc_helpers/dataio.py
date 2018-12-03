@@ -5,6 +5,17 @@ import os
 import re
 
 def load_data(day, year = 2018):
+    """ Download and save and return the input for the indicated day.
+
+    Input arguments:
+    day -- the day of the calendar for which we want the input as an integer
+    year -- the year for which we want the input of the day as an integer 
+    The default year is 2018
+    
+    The data is stored in a subfolder "data/year/".
+    The function assumes that this folder already exist.
+    The name of the file where the data is stored is "dayday.dat"
+    """
     filename = ''.join(['data//', str(year), '//day', str(day), '.dat'])
     if not os.path.exists(filename):
         data = get_data(day, year)
