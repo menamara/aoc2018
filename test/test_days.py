@@ -9,6 +9,7 @@ class Test_TestDays(unittest.TestCase):
 
     def test_day3_test_area_overlap(self):
         test_area_list = day3.Area_List(['#1 @ 1,3: 4x4', '#2 @ 3,1: 4x4', '#3 @ 5,5: 2x2'])
+        self.assertEqual(test_area_list.area_list[0].has_overlap(test_area_list.area_list[0]), True)
         self.assertEqual(test_area_list.area_list[0].has_overlap(test_area_list.area_list[1]), True)
         self.assertEqual(test_area_list.area_list[0].has_overlap(test_area_list.area_list[2]), False)
         self.assertEqual(test_area_list.area_list[1].has_overlap(test_area_list.area_list[2]), False)

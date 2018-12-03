@@ -1,5 +1,6 @@
 import re
 import numpy
+import itertools
 from aoc_helpers import dataio
 
 class Area:
@@ -19,10 +20,10 @@ class Area:
 
     def has_overlap(self, other):
         """ Test if two areas overlap, return true if they to, otherwise false."""
-        overlap = ( (((self.x < other.x) and (other.x < self.x + self.dx)) or
-                     ((other.x < self.x) and (self.x < other.x + other.dx))) and
-                    (((self.y < other.y) and (other.y < self.y + self.dy)) or
-                     ((other.y < self.y) and (self.y < other.y + other.dy))) )
+        overlap = ( (((self.x <= other.x) and (other.x < self.x + self.dx)) or
+                     ((other.x <= self.x) and (self.x < other.x + other.dx))) and
+                    (((self.y <= other.y) and (other.y < self.y + self.dy)) or
+                     ((other.y <= self.y) and (self.y < other.y + other.dy))) )
         return overlap
 
 
@@ -43,7 +44,15 @@ class Area_List:
 
     def find_unoverlapping_area(self):
         """ Returns the ID of the first area not overlapping with any other """
-        return 0
+        list_len = len(self.area_list)
+        comp_matrix = numpy.zeros((list_len, list_len))
+        for a, b in itertools.combinations(self.area_list, 2):
+            if a.has_overlap(b):
+                comp_matrix[a.id-1, b.id-1] += 1
+        comp_matrix = comp_matrix + numpy.transpose(comp_matrix)
+        overlap_per_area = sum(comp_matrix)
+        return int(numpy.where (overlap_per_area == 0)[0]) + 1
+
 
 
 if __name__ == '__main__':
@@ -52,4 +61,5 @@ if __name__ == '__main__':
     areas = Area_List(input)
     print(' '.join(['The solution for day 3 part 1 = ', 
                     str(areas.count_overlap_linear()) ]))
-    print(' '.join(['The solution for day 3 part 2 =', '']))
+    print(' '.join(['The solution for day 3 part 2 =',
+                    str(areas.find_unoverlapping_area()) ]))
