@@ -17,9 +17,13 @@ class Area:
         self.dy = int(attributes.group('dy'))
         self.area = self.dx * self.dy
 
-    def overlap(self, other):
-        """ return the overlap between two areas, empty if they do not overlapp """
-        return []
+    def has_overlap(self, other):
+        """ Test if two areas overlap, return true if they to, otherwise false."""
+        overlap = ( (((self.x < other.x) and (other.x < self.x + self.dx)) or
+                     ((other.x < self.x) and (self.x < other.x + other.dx))) and
+                    (((self.y < other.y) and (other.y < self.y + self.dy)) or
+                     ((other.y < self.y) and (self.y < other.y + other.dy))) )
+        return overlap
 
 
 
@@ -37,6 +41,9 @@ class Area_List:
             canvas[area.y:(area.y+area.dy), area.x:(area.x+area.dx)] += 1
         return  numpy.sum(canvas > 1)
 
+    def find_unoverlapping_area(self):
+        """ Returns the ID of the first area not overlapping with any other """
+        return 0
 
 
 if __name__ == '__main__':
