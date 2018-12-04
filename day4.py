@@ -30,6 +30,19 @@ class Log_Entry:
             self.type = 'id'
             self.id = re.match(r'.*#(?P<id>\d+).*', attributes.group('entry')).group('id')
 
+''' ToDo
+* collect all log entries for one day
+    -> Class Day with 
+    id of guard 
+    list for up and down
+    asleep minutes using range and zip pairs of up & down
+* collect all days for 1 guard
+    -> Class Guard with 
+    list of Days
+    count asleep minutes with len
+    find most frequent asleep minute with Counter
+'''
+
 if __name__ == '__main__':
     data = dataio.load_data(3)
     input = dataio.split_data(data,'\n')
