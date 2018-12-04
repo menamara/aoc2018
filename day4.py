@@ -1,11 +1,16 @@
 import re
 import time as t
-import numpy
 import itertools
 from aoc_helpers import dataio
 
 class Log_Entry:
-    """ A log entry with id, Date and time and fall asleep or wakeup information."""
+    """ A log entry with a date and a type.
+    
+    Type can be 
+    'up'   -- if the guard woke up at this time
+    'down' -- if the guard fell asleep at this time
+    'id'   -- if the guard came on duty, in this case the id is also saved
+    """
         
     def __init__(self, line_string):
         """ Initiate the log entry and format its attributes.
@@ -33,7 +38,10 @@ class Log_Entry:
 
 
 class Day:
-    """ A day holds the id of the guard on duty and his up and down times."""
+    """ A day holds a date, the id of the guard and up and down times.
+    
+    The day of the year (yday) functions as id for each day.
+    """
 
     def __init__(self, log_entry):
         self.date = log_entry.yday
@@ -65,7 +73,7 @@ class Day:
         return asleep_minutes
 
 class Guard:
-    """ A guard has an id and a list of days where he was on duty."""
+    """ A guard has an id and a list of days when he was on duty."""
     def __init__(self, day):
         self.id = day.id
         self.days = [day]
@@ -140,10 +148,10 @@ def find_most_consistent_sleeper(input):
 if __name__ == '__main__':
     data = dataio.load_data(4)
     input = dataio.split_data(data,'\n')
-    print(' '.join(['The solution for day 4 part 2 =',
-                    str(find_most_consistent_sleeper(input))]))
     longest_sleeper = find_longest_sleeper(input)
     answer1 = longest_sleeper.find_most_asleep_minute() * int(longest_sleeper.id)
 
     print(' '.join(['The solution for day 4 part 1 = ', 
                     str(answer1)]))
+    print(' '.join(['The solution for day 4 part 2 =',
+                    str(find_most_consistent_sleeper(input))]))
