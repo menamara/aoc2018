@@ -1,5 +1,47 @@
 import unittest
-import day1, day2, day3
+import day1, day2, day3, day4
+
+class Test_Day4(unittest.TestCase):
+    def setUp(self):
+        test_input = [
+            '[1518-11-01 00:00] Guard #10 begins shift',
+            '[1518-11-01 00:05] falls asleep',
+            '[1518-11-01 00:25] wakes up',
+            '[1518-11-01 00:30] falls asleep',
+            '[1518-11-01 00:55] wakes up',
+            '[1518-11-01 23:58] Guard #99 begins shift',
+            '[1518-11-02 00:40] falls asleep',
+            '[1518-11-02 00:50] wakes up',
+            '[1518-11-03 00:05] Guard #10 begins shift',
+            '[1518-11-03 00:24] falls asleep',
+            '[1518-11-03 00:29] wakes up',
+            '[1518-11-04 00:02] Guard #99 begins shift',
+            '[1518-11-04 00:36] falls asleep',
+            '[1518-11-04 00:46] wakes up',
+            '[1518-11-05 00:03] Guard #99 begins shift',
+            '[1518-11-05 00:45] falls asleep',
+            '[1518-11-05 00:55] wakes up']
+        self.entries = []
+        for line in test_input:
+            self.entries.append(day4.Log_Entry(line))
+
+    def test_entry_time(self):
+        self.assertEqual(self.entries[0].time.tm_year, 1518)
+        self.assertEqual(self.entries[0].time.tm_mon, 11)
+        self.assertEqual(self.entries[0].time.tm_mday, 1)
+        self.assertEqual(self.entries[0].time.tm_hour, 0)
+        self.assertEqual(self.entries[0].time.tm_min, 0)
+
+    def test_entry_type(self):
+        self.assertEqual(self.entries[0].id, '10')
+        self.assertEqual(self.entries[0].type, 'id')
+        self.assertEqual(self.entries[1].id, '0')
+        self.assertEqual(self.entries[1].type, 'down')
+        self.assertEqual(self.entries[2].id, '0')
+        self.assertEqual(self.entries[2].type, 'up')
+
+    def tearDown(self):
+        del self.entries
 
 class Test_TestDays(unittest.TestCase):
 
