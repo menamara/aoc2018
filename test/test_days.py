@@ -24,20 +24,40 @@ class Test_Day4(unittest.TestCase):
         self.entries = []
         for line in test_input:
             self.entries.append(day4.Log_Entry(line))
+        self.list_of_days = day4.compile_list_of_days(test_input)
+        self.list_of_guards = day4.assign_days_to_guards(test_input)
+        self.longest_sleeper = day4.find_longest_sleeper(test_input)
 
-    def test_entry_time(self):
+    def test_guards(self):
+        self.assertEqual('99' in self.list_of_guards, True)
+        self.assertEqual('10' in self.list_of_guards, True)
+        self.assertEqual(self.list_of_guards['99'].count_asleep_minutes(), 30)
+        self.assertEqual(self.list_of_guards['10'].count_asleep_minutes(), 50)
+        self.assertEqual(self.longest_sleeper.id, '10')
+        self.assertEqual(self.longest_sleeper.find_most_asleep_minute(), 24)
+        self.assertEqual(self.list_of_guards['99'].find_most_asleep_minute(), 45)
+
+
+
+    def test_list_of_days(self):
+        self.assertEqual(len(self.list_of_days), 5)
+        self.assertEqual(list(self.list_of_days.values())[0].id, '10')
+        self.assertEqual(list(self.list_of_days.values())[1].id, '99')
+        self.assertEqual(list(self.list_of_days.values())[2].id, '10')
+        self.assertEqual(list(self.list_of_days.values())[3].id, '99')
+        self.assertEqual(list(self.list_of_days.values())[4].id, '99')
+        
+    def test_log_entry_time(self):
         self.assertEqual(self.entries[0].time.tm_year, 1518)
         self.assertEqual(self.entries[0].time.tm_mon, 11)
         self.assertEqual(self.entries[0].time.tm_mday, 1)
         self.assertEqual(self.entries[0].time.tm_hour, 0)
         self.assertEqual(self.entries[0].time.tm_min, 0)
 
-    def test_entry_type(self):
+    def test_log_entry_type(self):
         self.assertEqual(self.entries[0].id, '10')
         self.assertEqual(self.entries[0].type, 'id')
-        self.assertEqual(self.entries[1].id, '0')
         self.assertEqual(self.entries[1].type, 'down')
-        self.assertEqual(self.entries[2].id, '0')
         self.assertEqual(self.entries[2].type, 'up')
 
     def tearDown(self):

@@ -16,11 +16,10 @@ class Log_Entry:
         [1518-11-01 00:25] wakes up
          """
 
-        self.id = '0'
-
         attributes = re.match(
             r"\[(?P<time>[\d\-\: ]*)\] (?P<entry>.*)", line_string)
         self.time = t.strptime(attributes.group('time'), "%Y-%m-%d %H:%M")
+        self.yday= self.time.tm_yday
 
         if attributes.group('entry') == 'falls asleep':
             self.type = 'down'
@@ -29,24 +28,107 @@ class Log_Entry:
         else:
             self.type = 'id'
             self.id = re.match(r'.*#(?P<id>\d+).*', attributes.group('entry')).group('id')
+            if  self.time.tm_hour == 23:
+                self.yday += 1
 
-''' ToDo
-* collect all log entries for one day
-    -> Class Day with 
-    id of guard 
-    list for up and down
-    asleep minutes using range and zip pairs of up & down
-* collect all days for 1 guard
-    -> Class Guard with 
-    list of Days
-    count asleep minutes with len
-    find most frequent asleep minute with Counter
-'''
+
+class Day:
+    """ A day holds the id of the guard on duty and his up and down times."""
+
+    def __init__(self, log_entry):
+        self.date = log_entry.yday
+        self.down = []
+        self.up= []
+        self.id = []
+        self.add_to_log(log_entry)
+
+    def add_to_log(self, log_entry):
+        assert(self.date == log_entry.yday)
+        if log_entry.type == 'down':
+            self.down.append(log_entry.time.tm_min) 
+        elif log_entry.type == 'up':
+            self.up.append(log_entry.time.tm_min) 
+        else:
+            self.id = log_entry.id
+
+    def count_asleep_minutes(self):
+        minutes_asleep = 0
+        assert(len(self.up)==len(self.down))
+        for fall_asleep_minute, wake_up_minute in zip(sorted(self.down), sorted(self.up)):
+            minutes_asleep += (wake_up_minute - fall_asleep_minute)
+        return minutes_asleep
+
+    def get_asleep_minutes(self):
+        asleep_minutes = [] 
+        for fall_asleep_minute, wake_up_minute in zip(sorted(self.down), sorted(self.up)):
+            asleep_minutes.extend(list(range(fall_asleep_minute, wake_up_minute)))
+        return asleep_minutes
+
+class Guard:
+    """ A guard has an id and a list of days where he was on duty."""
+    def __init__(self, day):
+        self.id = day.id
+        self.days = [day]
+    
+    def add_day(self, day):
+        assert(day.id == self.id)
+        self.days.append(day)
+
+    def count_asleep_minutes(self):
+        minutes_asleep = 0
+        for day in self.days:
+            minutes_asleep += day.count_asleep_minutes()
+        return minutes_asleep
+    
+    def find_most_asleep_minute(self):
+        minutes = bytearray(60)
+        for day in self.days:
+            asleep_minutes = day.get_asleep_minutes()
+            for minute in asleep_minutes:
+                minutes[minute] += 1
+        most_asleep_minute = minutes.index(max(minutes))
+        return most_asleep_minute
+
+def compile_list_of_days(input):
+    list_of_days = {}
+    for line in input:
+        entry = Log_Entry(line)
+        yday = entry.yday 
+        if yday in list_of_days:
+            list_of_days[yday].add_to_log(entry)
+        else:
+            list_of_days[yday] = Day(entry)
+    return list_of_days
+    
+def assign_days_to_guards(input):
+    list_of_days = compile_list_of_days(input)
+    list_of_guards = {}
+    for day in list_of_days.values():
+        if day.id in list_of_guards:
+            list_of_guards[day.id].add_day(day)
+        else:
+            list_of_guards[day.id] = Guard(day)
+    return list_of_guards
+
+def find_longest_sleeper(input):
+    list_of_guards = assign_days_to_guards(input)
+    longest_sleeper = []
+    max_sleep_time = 0
+    for guard in list_of_guards.values():
+        sleep_time = guard.count_asleep_minutes()
+        if max_sleep_time < sleep_time:
+            max_sleep_time = sleep_time 
+            longest_sleeper = guard
+    return longest_sleeper
+
 
 if __name__ == '__main__':
-    data = dataio.load_data(3)
+    data = dataio.load_data(4)
     input = dataio.split_data(data,'\n')
+    longest_sleeper = find_longest_sleeper(input)
+    answer1 = longest_sleeper.find_most_asleep_minute() * int(longest_sleeper.id)
+
     print(' '.join(['The solution for day 4 part 1 = ', 
-                    '']))
+                    str(answer1)]))
     print(' '.join(['The solution for day 4 part 2 =',
                     '']))
