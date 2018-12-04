@@ -27,6 +27,10 @@ class Test_Day4(unittest.TestCase):
         self.list_of_days = day4.compile_list_of_days(test_input)
         self.list_of_guards = day4.assign_days_to_guards(test_input)
         self.longest_sleeper = day4.find_longest_sleeper(test_input)
+        self.most_consistent_sleeper = day4.find_most_consistent_sleeper(test_input)
+
+    def test_strategy2(self):
+        self.assertEquals(self.most_consistent_sleeper, 4455)
 
     def test_guards(self):
         self.assertEqual('99' in self.list_of_guards, True)

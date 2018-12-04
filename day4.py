@@ -80,14 +80,17 @@ class Guard:
             minutes_asleep += day.count_asleep_minutes()
         return minutes_asleep
     
-    def find_most_asleep_minute(self):
+    def count_most_asleep_minute(self):
         minutes = bytearray(60)
         for day in self.days:
             asleep_minutes = day.get_asleep_minutes()
             for minute in asleep_minutes:
                 minutes[minute] += 1
         most_asleep_minute = minutes.index(max(minutes))
-        return most_asleep_minute
+        return (most_asleep_minute, max(minutes))
+
+    def find_most_asleep_minute(self):
+        return self.count_most_asleep_minute()[0]
 
 def compile_list_of_days(input):
     list_of_days = {}
@@ -121,14 +124,26 @@ def find_longest_sleeper(input):
             longest_sleeper = guard
     return longest_sleeper
 
+def find_most_consistent_sleeper(input):
+    list_of_guards = assign_days_to_guards(input)
+    max_days = 0
+    answer = 0
+    sleep_record = []
+    for guard in list_of_guards.values():
+        sleep_record = guard.count_most_asleep_minute()
+        if max_days < sleep_record[1]:
+            max_days = sleep_record[1]
+            answer = int(guard.id) * sleep_record[0]
+    return answer
+
 
 if __name__ == '__main__':
     data = dataio.load_data(4)
     input = dataio.split_data(data,'\n')
+    print(' '.join(['The solution for day 4 part 2 =',
+                    str(find_most_consistent_sleeper(input))]))
     longest_sleeper = find_longest_sleeper(input)
     answer1 = longest_sleeper.find_most_asleep_minute() * int(longest_sleeper.id)
 
     print(' '.join(['The solution for day 4 part 1 = ', 
                     str(answer1)]))
-    print(' '.join(['The solution for day 4 part 2 =',
-                    '']))
