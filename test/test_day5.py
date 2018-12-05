@@ -5,6 +5,19 @@ class Test_Day5(unittest.TestCase):
     def setUp(self):
         test_input = 'dabAcCaCBAcCcaDA'
         self.polymer = day5.Polymer(test_input)
+    
+    def test_delete_char(self):
+       self.assertEqual(day5.delete_char('dabAcCaCBAcCcaDA','a'),'dbcCCBcCcD') 
+       self.assertEqual(day5.delete_char('dabAcCaCBAcCcaDA','b'),'daAcCaCAcCcaDA') 
+       self.assertEqual(day5.delete_char('dabAcCaCBAcCcaDA','c'),'dabAaBAaDA') 
+       self.assertEqual(day5.delete_char('dabAcCaCBAcCcaDA','d'),'abAcCaCBAcCcaA') 
+    
+    def test_min_len(self):
+        self.assertEqual(self.polymer.reduced_length_with_broken_unit('a'),6)
+        self.assertEqual(self.polymer.reduced_length_with_broken_unit('b'),8)
+        self.assertEqual(self.polymer.reduced_length_with_broken_unit('c'),4)
+        self.assertEqual(self.polymer.reduced_length_with_broken_unit('d'),6)
+        self.assertEqual(day5.find_shortest(self.polymer), 4) 
 
     def test_reduction(self):
         self.assertEqual(day5.reduce('a'),'a')
