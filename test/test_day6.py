@@ -29,3 +29,7 @@ class Test_Day5(unittest.TestCase):
 
     def test_asso_map_area(self):
         self.assertEqual(self.asso_map.max_area(), 17)
+        
+    def test_manhattan_dist(self):
+        self.assertEqual(day6.manhattan_dist([0,0],[1,1]),2)
+        self.assertEqual(day6.manhattan_dist([0,5],[1,1]),5)
