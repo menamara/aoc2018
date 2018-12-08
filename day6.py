@@ -37,6 +37,33 @@ class Association_Map:
             del area_counts[value] 
         return max(area_counts.values())
 
+    def area_around_all(self, radius):
+        xmax = self.xmax
+        ymax = self.ymax
+        xmin = self.xmin
+        ymin = self.ymin
+        area_size = 0
+        for x in range(xmin, xmax):
+            for y in range(ymin, ymax):
+                dist_list = [manhattan_dist([x,y], a) for a in self.anchor]
+                if sum(dist_list) < radius:
+                    area_size += 1
+        return area_size
+
+
+def transform_to_ab(xy):
+    a = sum(xy)
+    b = xy[0] - xy[1] 
+    return [a, b]
+
+def transform_to_xy(ab):
+    x = sum(ab)/2
+    y = (ab[0] - ab[1])/2
+    return [x, y]
+
+
+
+
 
 def manhattan_dist(x, y):
     return abs(y[0] - x[0]) + abs(y[1] - x[1])
@@ -49,4 +76,4 @@ if __name__ == '__main__':
     print(' '.join(['The solution for day 6 part 1 =', 
                    str(asso_map.max_area())]))
     print(' '.join(['The solution for day 6 part 2 =',
-                    '']))
+                    str(asso_map.area_around_all(10000))]))
